@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Registration and Login App</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+</head>
+<body>
+<!-- create navigation bar ( header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">IT World</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/forum}">Forum</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<br>
+<br>
+<br>
+<br>
+
+<div id="mytable">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">TOPICS</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+                <th scope="col">Comments</th>
+                <th scope="col">Entry</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:object="${topic}" th:each="topic : ${listOfTopics}">
+                <th scope="row" th:text="${topic.getId()}"></th>
+                <td th:text="${topic.getName()}"></td>
+                <td th:text="${topic.getDescription()}"></td>
+                <td th:text="${topic.getDate()}"></td>
+                <td th:text="${topic.getListOfComments().size()}"></td>
+                <td><a th:href="@{'/comment/'+${topic.getId()}+''}">-></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <h2>Admins interface:</h2>
+        <form th:action="@{/deleteTopic}" method="post">
+            <label for="topicId">Topic ID</label>
+            <input type="text" name="topicId" id="topicId">
+            <input type="submit" value="Delete">
+        </form>
+        <p>(this can see only admin)</p>
+    </div>
+</div>
+</body>
+</html>

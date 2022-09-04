@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Registration and Login App</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+</head>
+<body>
+<!-- create navigation bar ( header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">IT World</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/forum}">Forum</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<br>
+<br>
+<br>
+<br>
+
+<div id="mytable">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">COMMENTS</th>
+            <th scope="col">Author</th>
+            <th scope="col">Text</th>
+            <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:object="${comment}" th:each="comment : ${listOfComments}">
+            <th scope="row" th:text="${comment.getId()}"></th>
+            <td th:text="${comment.getAuthor()}"></td>
+            <td th:text="${comment.getText()}"></td>
+            <td th:text="${comment.getDate()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br><br>
+<form th:action="@{'/comment/' + ${topicId}}" method="post">
+    <label for="text">Comment</label>
+    <input type="text" name="text" id="text">
+    <input type="submit" value="Add">
+</form>
+<br><br><br><br><br>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    <h2>Admins interface:</h2>
+    <form th:action="@{'/deleteComment/' + ${topicId}}" method="post">
+        <label for="commentId">Comment ID</label>
+        <input type="text" name="commentId" id="commentId">
+        <input type="submit" value="Delete">
+    </form>
+    <p>(this can see only admin)</p>
+</div>
+</div>
+</body>
+</html>
