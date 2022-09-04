@@ -17,14 +17,14 @@ import java.util.List;
 
 @SpringBootApplication
 @RequiredArgsConstructor
-public class CourseManagementSystemApplication implements CommandLineRunner {
+public class spring_security_thymeleafApplication implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final TopicRepository topicRepository;
     private final CommentRepository commentRepository;
 
     public static void main(String[] args) {
-        SpringApplication.run(CourseManagementSystemApplication.class, args);
+        SpringApplication.run(spring_security_thymeleafApplication.class, args);
     }
 
     @Override
